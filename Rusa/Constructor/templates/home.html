@@ -1,0 +1,222 @@
+{% extends 'base_generic.html' %}
+
+{% block title %}WEB Руза{% endblock %}
+
+{% block content %}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css"> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB Руза - Путешествуйте в интересной компании</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=403f644f-4840-426e-b2df-bea42d662d87&lang=ru_RU" type="text/javascript"></script>
+    <script>var customIconImage = "{% static 'img/rusa.png' %}";</script>
+    <script>var userId = "{{ user_id }}";</script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{% static 'main/background-map.jpg' %}') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+        }
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+        .btn {
+            display: inline-block;
+            background: #8bc34a;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #7cb342;
+        }
+        .features {
+            padding: 80px 0;
+            background: #f9f9f9;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+        }
+        .feature-item i {
+            font-size: 3rem;
+            color: #8bc34a;
+            margin-bottom: 15px;
+        }
+        .map-section {
+            padding: 80px 0;
+        }
+        #map {
+            height: 500px;
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .route-selector {
+            text-align: center;
+            padding: 2em 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .route-selector img {
+            max-width: 80%;
+            height: auto;
+            border: 1px solid #ddd;
+            margin-bottom: 1em;
+        }
+        .route-selector .button {
+            background-color: #8bc34a;
+            color: white;
+            border: none;
+            padding: 1em 2em;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 10px;
+            text-decoration: none;
+        }
+        .testimonials {
+            background: #fff;
+            padding: 80px 0;
+        }
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .testimonial-item {
+            background: #f9f9f9;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .testimonial-item img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+        }
+        .cta {
+            background: #2c3e50;
+            color: #fff;
+            text-align: center;
+            padding: 80px 0;
+        }
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+    </style>
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=403f644f-4840-426e-b2df-bea42d662d87&lang=ru_RU" type="text/javascript"></script>
+</head>
+<body>
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>Путешествуйте в интересной компании</h1>
+            <p>Мы помогаем людям найти попутчиков и составить уникальные маршруты путешествий.</p>
+            <a href="{% url 'route_list' %}" class="btn">Начать путешествие</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <h3>Выберите маршрут</h3>
+                    <p>Широкий выбор готовых маршрутов или создайте свой собственный.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3>Выберите дату</h3>
+                    <p>Гибкое планирование поездки в удобное для вас время.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-hiking"></i>
+                    <h3>Выберите активность</h3>
+                    <p>От спокойных прогулок до экстремальных приключений.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="map-section">
+        <div class="container">
+            <div class="route-selector">
+                <h2>Выберите маршрут или предложите свой</h2>
+                <div id="map" style="min-height: 600px">
+                    <!-- <div id="routesContainer"></div> -->
+                </div>
+                <a href="{% url 'constructor' %}" class="btn" style="margin-top: 20px">Создать свой маршрут</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="container">
+            <h2>Отзывы путешественников</h2>
+            <div class="testimonial-grid">
+                <div class="testimonial-item">
+                    <img src="{% static 'main/avatar.jpg' %}" alt="Петр А.">
+                    <h3>Петр А.</h3>
+                    <p>"Невероятные впечатления! WEB Руза помог мне спланировать идеальное путешествие."</p>
+                </div>
+                <div class="testimonial-item">
+                    <img src="{% static 'main/avatar.jpg' %}" alt="Елена Ф.">
+                    <h3>Елена Ф.</h3>
+                    <p>"Нашла отличных попутчиков и открыла для себя новые места. Спасибо WEB Руза!"</p>
+                </div>
+                <div class="testimonial-item">
+                    <img src="{% static 'main/avatar.jpg' %}" alt="Иван И.">
+                    <h3>Иван И.</h3>
+                    <p>"Как организатор, я в восторге от возможностей, которые предоставляет платформа."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <h2>Готовы к новым приключениям?</h2>
+            <a href="{% url 'signup_user' %}" class="btn">Присоединиться сейчас</a>
+        </div>
+    </section>
+    <script src="{% static 'js/map.js' %}?v={{ now|date:'U' }}"></script>
+    <script src="{% static 'js/animated_line.js' %}"></script>
+</body>
+</html>
+{% endblock %}

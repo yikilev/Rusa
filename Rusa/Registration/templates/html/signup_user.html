@@ -1,0 +1,125 @@
+{% extends 'base_generic.html' %}
+{% load static %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .registration-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 50px;
+        height: 100vh;
+        box-sizing: border-box;
+    }
+
+    .left-section {
+        max-width: 300px;
+        width: 100%;
+        margin-right: 20px;
+    }
+
+    .left-section h2 {
+        text-align: center;
+        font-weight: 500;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .left-section form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .left-section form input {
+        margin-bottom: 15px;
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        transition: border-color 0.3s;
+    }
+
+    .left-section form input:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+    .left-section form button {
+        padding: 12px;
+        font-size: 16px;
+        font-weight: 500;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .left-section form button:hover {
+        background-color: #0056b3;
+    }
+
+    .left-section p {
+        text-align: center;
+        margin-top: 20px;
+        color: #555;
+    }
+
+    .left-section p a {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .left-section p a:hover {
+        text-decoration: underline;
+    }
+
+    .right-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    .right-section img {
+        max-width: 94%;
+        max-height: 94%;
+        object-fit: contain;
+    }
+
+    @media (max-width: 900px) {
+        .right-section img {
+            display: none;
+        }
+    }
+</style>
+
+<div class="registration-container">
+    <div class="left-section">
+        <h2>Регистрация</h2>
+        <form method="post" action="{% url 'signup_user' %}">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Имя пользователя" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password1" placeholder="Пароль" required>
+            <input type="password" name="password2" placeholder="Подтверждение пароля" required>
+            <button type="submit">Зарегистрироваться</button>
+        </form>
+        <p>Уже есть аккаунт? <a href="{% url 'view_login' %}">Войдите</a>.</p>
+    </div>
+    <div class="right-section">
+        <img src="{% static 'generic/img/illustration.png' %}" alt="Иллюстрация">
+    </div>
+</div>
+{% endblock %}
